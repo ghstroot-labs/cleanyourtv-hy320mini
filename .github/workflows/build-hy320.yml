@@ -32,6 +32,9 @@ jobs:
       - name: Check HY320 package identity
         run: python -m unittest discover -s tests -p test_hy320_package_identity.py -v
 
+      - name: Check shell script syntax
+        run: bash -n launcher/build-and-install.sh tools/theme.sh
+
       - name: Build launcher
         working-directory: launcher
         run: |
