@@ -15,12 +15,46 @@ android {
         versionName '3.1.6-projector'
     }
 
+    // Release builds use one persistent, private PKCS#12 key supplied by the build environment.
+    // Debug builds continue to use the normal per-run Android debug key and are never installable updates.
+    def releaseStoreFile = providers.environmentVariable('ANDROID_KEYSTORE_PATH').orNull
+    def releaseStorePassword = providers.environmentVariable('ANDROID_KEYSTORE_PASSWORD').orNull
+    def releaseKeyAlias = providers.environmentVariable('ANDROID_KEY_ALIAS').orNull
+    def releaseKeyPassword = providers.environmentVariable('ANDROID_KEY_PASSWORD').orNull
+    def hasReleaseSigning = [releaseStoreFile, releaseStorePassword, releaseKeyAlias, releaseKeyPassword]
+            .every { it != null && !it.trim().isEmpty() }
+
+    signingConfigs {
+        release {
+            if (hasReleaseSigning) {
+                storeFile file(releaseStoreFile)
+                storePassword releaseStorePassword
+                keyAlias releaseKeyAlias
+                keyPassword releaseKeyPassword
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
+        }
+    }
+
+    // Fail closed: never silently fall back to the temporary debug key for a release APK.
+    tasks.configureEach { task ->
+        if (task.name == 'validateSigningRelease') {
+            task.doFirst {
+                if (!hasReleaseSigning) {
+                    throw new GradleException('Release signing is not configured. Supply ANDROID_KEYSTORE_PATH, ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS and ANDROID_KEY_PASSWORD.')
+                }
+                if (!file(releaseStoreFile).isFile()) {
+                    throw new GradleException('ANDROID_KEYSTORE_PATH does not point to an existing keystore file.')
+                }
+            }
         }
     }
 
