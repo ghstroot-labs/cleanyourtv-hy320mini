@@ -1,17 +1,15 @@
 {
   "dock_apps": [
-    "com.netflix.ninja",
-    "com.amazon.amazonvideo.livingroom",
     "com.google.android.youtube.tv",
-    "in.startv.hotstar"
+    "com.world.youcinetv"
   ],
+  "fill_dock": false,
   "background_color": "#000000",
   "dock_glass": false,
   "dock_band": false,
   "glass_style": "rim",
   "dock_title": false,
   "dock_opacity": 70,
-  "fill_dock": true,
   "columns": 4,
   "ambient_glow": false,
   "app_glow": false,
@@ -36,8 +34,5 @@
   "wallpaper_order": "sequential",
   "reduced_motion": true,
   "sky_intensity": 0,
-  "library_apps": [
-    "com.netflix.mediaclient"
-  ],
   "rows_below_dock": 0
 }
