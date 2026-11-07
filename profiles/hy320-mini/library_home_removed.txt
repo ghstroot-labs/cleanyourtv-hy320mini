@@ -1,0 +1,4 @@
+com.android.chrome
+com.droidlogic.mediacenter
+com.droidlogic.updater
+io.github.sumyabazar1.weather
