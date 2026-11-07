@@ -9,7 +9,7 @@ on:
         type: boolean
         default: false
   push:
-    branches: [main, hy320-mini]
+    branches: [main, hy320-mini, 'sync/upstream-2026-11-07']
 
 permissions:
   contents: read
