@@ -14,10 +14,10 @@ import java.io.FileNotFoundException;
  * locked out of Android/data (TCL G07, Android 11). Only the files {@link ThemeFiles} allows, and only for
  * callers holding WRITE_SECURE_SETTINGS, which the adb shell has and ordinary apps cannot get.
  *
- *   content write --uri content://com.gathin.tvhome.theme/config.json < /data/local/tmp/config.json
- *   content write --uri content://com.gathin.tvhome.theme/wallpapers/dusk.jpg < /data/local/tmp/dusk.jpg
- *   content delete --uri content://com.gathin.tvhome.theme/config.json
- *   content delete --uri content://com.gathin.tvhome.theme/wallpapers      (every image in the collection)
+ *   content write --uri content://xyz.ghstroot.cleanyourtv.hy320mini.theme/config.json < /data/local/tmp/config.json
+ *   content write --uri content://xyz.ghstroot.cleanyourtv.hy320mini.theme/wallpapers/dusk.jpg < /data/local/tmp/dusk.jpg
+ *   content delete --uri content://xyz.ghstroot.cleanyourtv.hy320mini.theme/config.json
+ *   content delete --uri content://xyz.ghstroot.cleanyourtv.hy320mini.theme/wallpapers      (every image in the collection)
  */
 public class ThemeProvider extends ContentProvider {
 
