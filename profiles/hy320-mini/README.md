@@ -18,7 +18,7 @@ This profile was reconstructed from the local CleanYourTV launcher backup create
 ## Source and effective values
 
 - The profile preserves the observed effective layout: **4 columns**, **70% dock opacity**, and **0 rows below the dock**.
-- The dock order remains Netflix, Prime Video, YouTube and Hotstar. The dock header in `order.txt` must continue to match `config.json`.
+- The source backup's historical dock order is preserved in `order.txt`; the active HY320 Mini profile intentionally uses only YouTube (`com.google.android.youtube.tv`) and YouCine (`com.world.youcinetv`). Netflix and SmartTube are deliberately excluded from the dock, and `fill_dock: false` leaves the other two slots empty. The four-column grid remains unchanged.
 - `library_apps.txt` and `library_home_removed.txt` preserve separate app-library choices. They are not the same as the `library_apps` theme key.
 - The visual settings are based on the upstream `retro` theme, with icon-only buttons disabled to match the backed-up configuration.
 - The three time-of-day wallpaper filenames in `config.json` are supplied by the upstream `themes/retro/wallpapers/` directory. They do not need to be extracted from the personal backup.
