@@ -25,6 +25,13 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check HY320 package identity
+        run: python -m unittest discover -s tests -p test_hy320_package_identity.py -v
+
       - name: Build launcher
         working-directory: launcher
         run: |
