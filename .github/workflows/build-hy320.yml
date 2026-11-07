@@ -3,7 +3,7 @@ name: Build HY320 launcher APK
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, hy320-mini]
 
 permissions:
   contents: read
@@ -31,9 +31,19 @@ jobs:
           chmod +x gradlew
           ./gradlew --no-daemon :app:assembleDebug -PlauncherApplicationId=com.gathin.tvhome
 
+      - name: Mark artifact as CI-only
+        run: |
+          {
+            echo "## Build-only artifact"
+            echo
+            echo "- This APK uses the temporary Android debug signing key generated on the GitHub Actions runner."
+            echo "- Do not install it on the projector or use it as an update package."
+            echo "- A persistent private release keystore and the final package identity must be configured before producing an installable APK."
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: cleanyourtv-hy320-apk
+          name: cleanyourtv-hy320-ci-debug
           path: launcher/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
