@@ -39,5 +39,32 @@ class Hy320PackageIdentityTests(unittest.TestCase):
         self.assertIn(":app:testDebugUnitTest", workflow)
 
 
+    def test_release_signing_never_falls_back_to_debug_key(self):
+        gradle = self.read("launcher/app/build.gradle")
+        self.assertIn("signingConfig signingConfigs.release", gradle)
+        self.assertNotIn("signingConfig signingConfigs.debug", gradle)
+        self.assertIn("if (!hasReleaseSigning)", gradle)
+        self.assertIn("validateSigningRelease", gradle)
+
+    def test_signed_release_is_manual_and_secret_backed(self):
+        workflow = self.read(".github/workflows/build-hy320.yml")
+        self.assertIn("build_signed_release", workflow)
+        self.assertIn("secrets.ANDROID_KEYSTORE_BASE64", workflow)
+        self.assertIn("secrets.ANDROID_KEYSTORE_PASSWORD", workflow)
+        self.assertIn("secrets.ANDROID_KEY_ALIAS", workflow)
+        self.assertIn(":app:assembleRelease", workflow)
+        self.assertIn("Remove temporary signing key", workflow)
+
+    def test_private_keystore_helper_writes_outside_repository(self):
+        helper = self.read("tools/create-hy320-release-keystore.ps1")
+        self.assertIn("$env:LOCALAPPDATA", helper)
+        self.assertIn("ghstroot-hy320mini-release", helper)
+        self.assertIn("Read-Host", helper)
+        self.assertNotIn("Set-Clipboard", helper)
+        ignore = self.read(".gitignore")
+        self.assertIn("*.p12", ignore)
+        self.assertIn("*.base64.txt", ignore)
+
+
 if __name__ == "__main__":
     unittest.main()
