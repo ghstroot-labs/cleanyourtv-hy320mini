@@ -12,6 +12,7 @@ This profile was reconstructed from the local CleanYourTV launcher backup create
 | `library_apps.txt` | Manually added Home shortcut from the app library |
 | `library_home_removed.txt` | Apps explicitly removed from Home |
 | `launcher-state.json` | Effective on-device preferences and restoration notes |
+| `backup-manifest.json` | Sanitized inventory of the 27 files in the backup, plus one ZIP directory entry |
 | `wallpapers/` | Local-only personal wallpaper assets; image files are excluded from Git |
 
 ## Source and effective values
