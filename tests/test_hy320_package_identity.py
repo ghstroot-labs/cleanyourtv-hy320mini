@@ -49,6 +49,7 @@ class Hy320PackageIdentityTests(unittest.TestCase):
     def test_signed_release_is_manual_and_secret_backed(self):
         workflow = self.read(".github/workflows/build-hy320.yml")
         self.assertIn("build_signed_release", workflow)
+        self.assertIn("github.ref == 'refs/heads/hy320-mini'", workflow)
         self.assertIn("secrets.ANDROID_KEYSTORE_BASE64", workflow)
         self.assertIn("secrets.ANDROID_KEYSTORE_PASSWORD", workflow)
         self.assertIn("secrets.ANDROID_KEY_ALIAS", workflow)
