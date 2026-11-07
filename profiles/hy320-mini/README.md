@@ -6,70 +6,50 @@ This profile was reconstructed from the local CleanYourTV launcher backup create
 
 | File | Purpose |
 |---|---|
-| `config.json` | Theme overlay: dock, layout, colours, reduced motion and timed wallpapers |
+| `config.json` | Theme overlay: dock, layout, colours, reduced motion and time-of-day wallpaper settings |
 | `order.txt` | Original owner-defined tile order from the backup |
 | `cards.json` | Saved module-card decision for the weather card |
 | `library_apps.txt` | Manually added Home shortcut from the app library |
 | `library_home_removed.txt` | Apps explicitly removed from Home |
 | `launcher-state.json` | Effective on-device preferences and restoration notes |
-| `backup-manifest.json` | Sanitized inventory of the 27 files in the backup, plus one ZIP directory entry |
-| `wallpapers/` | Local-only personal wallpaper assets; image files are excluded from Git |
+| `backup-manifest.json` | Sanitized inventory of the backup |
+| `wallpapers/` | Reserved for private assets; personal images are intentionally deferred |
 
 ## Source and effective values
 
-- `files/config.json` supplied the theme overlay and the three time-of-day wallpaper groups.
-- `shared_prefs/launcher_settings.xml` stored active local overrides of **4 columns** and **70% dock opacity**. These values took priority over the overlay's 5 columns and 100% opacity, so `config.json` records the effective values to preserve the observed layout after a theme push.
-- `files/order.txt` supplied the saved dock order: Netflix, Prime Video, YouTube, Hotstar. The same file records the tile sequence after the dock. Its dock header must continue to match `config.json` or the launcher will ignore the saved order.
-- `files/library_apps.txt` and `files/library_home_removed.txt` are preserved as separate app-library choices. They are not the same as `library_apps` in the theme overlay.
-- `shared_prefs/launcher_settings.xml` recorded `bundled_theme=retro`; the profile preserves the Retro visual values, with icon-only buttons disabled to match the backup's `config.json`.
-- `shared_prefs/launcher_settings.xml` recorded `Mario-Peaches.png` as the selected wallpaper. The time-of-day rotation is also preserved as the theme default.
+- The profile preserves the observed effective layout: **4 columns**, **70% dock opacity**, and **0 rows below the dock**.
+- The dock order remains Netflix, Prime Video, YouTube and Hotstar. The dock header in `order.txt` must continue to match `config.json`.
+- `library_apps.txt` and `library_home_removed.txt` preserve separate app-library choices. They are not the same as the `library_apps` theme key.
+- The visual settings are based on the upstream `retro` theme, with icon-only buttons disabled to match the backed-up configuration.
+- The three time-of-day wallpaper filenames in `config.json` are supplied by the upstream `themes/retro/wallpapers/` directory. They do not need to be extracted from the personal backup.
 
-## Extract the nine private wallpaper files
+## Wallpaper handling is deferred
 
-From the repository root in PowerShell, run:
+Do not run `extract-wallpapers.ps1` during the current recovery work. Personal wallpaper files and the backed-up manual wallpaper selection will be handled separately later.
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\profiles\hy320-mini\extract-wallpapers.ps1
-```
+**Do not push this directory directly with `tools/theme.ps1` or `tools/theme.sh`.** The upstream theme-push scripts clear the TV's existing wallpaper collection before uploading the selected folder. This profile intentionally does not contain the upstream image binaries.
 
-The script reads only the nine image entries from the backup ZIP, verifies their expected byte sizes, and writes them into `profiles/hy320-mini/wallpapers/`. It refuses to overwrite existing files unless `-Force` is supplied.
+When we reach theme restoration, prepare a combined local theme by copying the current upstream `themes/retro/` folder and replacing only its `config.json` with this profile's `config.json`. That keeps the upstream Retro wallpaper assets while applying the HY320 Mini layout settings. Do this only after the launcher has been recovered and its package/provider path is confirmed.
 
-| File | Backup size |
-|---|---:|
-| `4pm_9pm.jpg` | 236,421 bytes |
-| `6am_4pm.jpg` | 174,144 bytes |
-| `9pm_6am.jpg` | 279,878 bytes |
-| `custom_1793243537158.jpg` | 109,597 bytes |
-| `Mario-Olhando-Canos.png` | 1,842,032 bytes |
-| `Mario-Peach-Toad.jpeg` | 446,268 bytes |
-| `Mario-Peaches.png` | 2,793,239 bytes |
-| `Mario-Power-Fire.jpg` | 307,444 bytes |
-| `Mario-Yoshi.png` | 2,589,260 bytes |
+The backup recorded `Mario-Peaches.png` as the manually selected wallpaper. Restoring that selection is postponed with the other personal images.
 
-The three timed images are referenced by `config.json`: morning uses `6am_4pm.jpg`, evening uses `4pm_9pm.jpg`, and night uses `9pm_6am.jpg`.
+## Order and app-library compatibility
 
-## Restore the exact wallpaper selection
+`order.txt` is the launcher's private owner-order file, not a theme key. It is kept as a backup artifact; restoring it requires a supported order-import path or a manual reorder in Launcher Settings. Do not copy it into Android app data with an unrelated file manager.
 
-A theme push clears the on-device manual wallpaper choice. After the theme and wallpaper files are restored, open **Launcher Settings → Wallpaper** and select `Mario-Peaches.png` to reproduce the backed-up selection. Choose **Follow theme** later to resume the morning/evening/night rotation.
-
-## Important compatibility note
-
-`order.txt` is the launcher’s private owner-order file, not a theme key. It is kept here as a backup artifact; restoring it to a running launcher requires a supported order-import path or a manual reorder in Launcher Settings. Do not copy it into Android app data with an unrelated file manager.
-
-The package names in the saved order are historical. Apps that are absent, disabled, or no longer expose a TV launch activity may not appear. Re-enable/verify an app before expecting it to return to Home.
+The package names in the saved order are historical. Apps that are absent, disabled, or no longer expose a TV launch activity may not appear. Verify each app before expecting it to return to Home.
 
 ## Privacy
 
-The backup's cached weather text and source from `MainActivity.xml`, the local IP/ADB port from `README.txt`, and internal `settings_revision` / `theme_signature` markers are intentionally excluded. They are not required to recreate the visual profile.
+The backup's cached weather text and source from `MainActivity.xml`, the local IP/ADB port from `README.txt`, and internal `settings_revision` / `theme_signature` markers are intentionally excluded.
 
-## Applying
+## Current safety gate
 
-Do not push this profile to the projector until the original launcher is recovered, the compatible HY320 HOME handling is resolved, and the wallpaper files have been extracted and checked.
+Do not build for installation, push a theme, change the default Home, or disable the stock launcher until all of these are resolved:
 
-When the launcher is ready and ADB is available:
+1. Restore a working launcher on the projector.
+2. Implement and validate the HY320 `HOME.JM` intent handling on the real device.
+3. Choose a package identity and configure a persistent signing key.
+4. Adapt the installation and theme tools to that package identity.
 
-```sh
-TV_HOST=<tv ip> tools/theme.sh profiles/hy320-mini
-```
-
-This directory is a device profile, not a new upstream theme listing. The launcher reads the same documented theme keys, so it can be reapplied after syncing the upstream CleanYourTV source.
+The device profile is separate from the upstream theme catalogue. It uses documented theme keys and should remain re-applicable after syncing upstream changes.
