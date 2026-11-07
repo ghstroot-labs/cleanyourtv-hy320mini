@@ -22,10 +22,19 @@ import java.io.FileNotFoundException;
 public class ThemeProvider extends ContentProvider {
 
     private File file(Uri uri) throws FileNotFoundException {
-        String path = ThemeFiles.path(uri.getPathSegments());
-        File dir = Config.dir(getContext());
-        if (dir == null || path == null) throw new FileNotFoundException(String.valueOf(uri));
-        File f = new File(dir, path);
+        java.util.List<String> segments = uri.getPathSegments();
+        String privateName = ThemeFiles.privateFile(segments);
+        File f;
+        if (privateName != null) {
+            if (getContext() == null || getContext().getFilesDir() == null)
+                throw new FileNotFoundException(String.valueOf(uri));
+            f = new File(getContext().getFilesDir(), privateName);
+        } else {
+            String path = ThemeFiles.path(segments);
+            File dir = Config.dir(getContext());
+            if (dir == null || path == null) throw new FileNotFoundException(String.valueOf(uri));
+            f = new File(dir, path);
+        }
         File parent = f.getParentFile();
         if (parent != null && !parent.isDirectory() && !parent.mkdirs()) throw new FileNotFoundException(String.valueOf(uri));
         return f;
