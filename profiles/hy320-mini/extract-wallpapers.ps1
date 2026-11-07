@@ -27,9 +27,11 @@ $expected = [ordered]@{
 }
 
 $archive = [IO.Compression.ZipFile]::OpenRead((Resolve-Path -LiteralPath $BackupZip).Path)
+$entries = @{}
 $results = [System.Collections.Generic.List[object]]::new()
 
 try {
+    # Validate every source entry and every overwrite condition before extracting any file.
     foreach ($name in $expected.Keys) {
         $entryName = "wallpapers/wallpapers/$name"
         $entry = $archive.GetEntry($entryName)
@@ -46,7 +48,12 @@ try {
             throw "File already exists and was not overwritten: $target. Re-run with -Force only if replacement is intended."
         }
 
-        $inputStream = $entry.Open()
+        $entries[$name] = $entry
+    }
+
+    foreach ($name in $expected.Keys) {
+        $target = Join-Path $destination $name
+        $inputStream = $entries[$name].Open()
         try {
             $outputStream = [IO.File]::Open($target, [IO.FileMode]::Create, [IO.FileAccess]::Write, [IO.FileShare]::None)
             try {
