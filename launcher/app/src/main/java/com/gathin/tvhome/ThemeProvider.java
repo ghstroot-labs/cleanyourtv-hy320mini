@@ -18,6 +18,12 @@ import java.io.FileNotFoundException;
  *   content write --uri content://xyz.ghstroot.cleanyourtv.hy320mini.theme/wallpapers/dusk.jpg < /data/local/tmp/dusk.jpg
  *   content delete --uri content://xyz.ghstroot.cleanyourtv.hy320mini.theme/config.json
  *   content delete --uri content://xyz.ghstroot.cleanyourtv.hy320mini.theme/wallpapers      (every image in the collection)
+ *
+ * Owner-state restore (the exact four filenames below are routed to getFilesDir(); no other private path is allowed):
+ *   content write --uri content://xyz.ghstroot.cleanyourtv.hy320mini.theme/order.txt < /data/local/tmp/order.txt
+ *   content write --uri content://xyz.ghstroot.cleanyourtv.hy320mini.theme/cards.json < /data/local/tmp/cards.json
+ *   content write --uri content://xyz.ghstroot.cleanyourtv.hy320mini.theme/library_apps.txt < /data/local/tmp/library_apps.txt
+ *   content write --uri content://xyz.ghstroot.cleanyourtv.hy320mini.theme/library_home_removed.txt < /data/local/tmp/library_home_removed.txt
  */
 public class ThemeProvider extends ContentProvider {
 
