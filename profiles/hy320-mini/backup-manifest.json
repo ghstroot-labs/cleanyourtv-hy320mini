@@ -1,0 +1,122 @@
+{
+  "backup_name": "HY320_Launcher_Backup_2026-11-07.zip",
+  "created_at": "2026-11-07 00:08:01",
+  "file_count": 28,
+  "entries": [
+    {
+      "path": "files/cards.json",
+      "bytes": 245
+    },
+    {
+      "path": "files/config.json",
+      "bytes": 520
+    },
+    {
+      "path": "files/library_apps.txt",
+      "bytes": 20
+    },
+    {
+      "path": "files/library_home_removed.txt",
+      "bytes": 99
+    },
+    {
+      "path": "files/order.txt",
+      "bytes": 619
+    },
+    {
+      "path": "shared_prefs/launcher_settings.xml",
+      "bytes": 494
+    },
+    {
+      "path": "shared_prefs/MainActivity.xml",
+      "bytes": 274
+    },
+    {
+      "path": "shared_prefs/wallpaper_rotation.xml",
+      "bytes": 238
+    },
+    {
+      "path": "wallpapers/wallpapers/4pm_9pm.jpg",
+      "bytes": 236421
+    },
+    {
+      "path": "wallpapers/wallpapers/6am_4pm.jpg",
+      "bytes": 174144
+    },
+    {
+      "path": "wallpapers/wallpapers/9pm_6am.jpg",
+      "bytes": 279878
+    },
+    {
+      "path": "wallpapers/wallpapers/custom_1793243537158.jpg",
+      "bytes": 109597
+    },
+    {
+      "path": "wallpapers/wallpapers/Mario-Olhando-Canos.png",
+      "bytes": 1842032
+    },
+    {
+      "path": "wallpapers/wallpapers/Mario-Peach-Toad.jpeg",
+      "bytes": 446268
+    },
+    {
+      "path": "wallpapers/wallpapers/Mario-Peaches.png",
+      "bytes": 2793239
+    },
+    {
+      "path": "wallpapers/wallpapers/Mario-Power-Fire.jpg",
+      "bytes": 307444
+    },
+    {
+      "path": "wallpapers/wallpapers/Mario-Yoshi.png",
+      "bytes": 2589260
+    },
+    {
+      "path": "activity-state.txt",
+      "bytes": 1286
+    },
+    {
+      "path": "appops.txt",
+      "bytes": 360
+    },
+    {
+      "path": "dumpsys-package.txt",
+      "bytes": 9186
+    },
+    {
+      "path": "launcher-original.apk",
+      "bytes": 8055021
+    },
+    {
+      "path": "package-path.txt",
+      "bytes": 116
+    },
+    {
+      "path": "pm-path.txt",
+      "bytes": 98
+    },
+    {
+      "path": "README.txt",
+      "bytes": 92
+    },
+    {
+      "path": "run-as-check.txt",
+      "bytes": 277
+    },
+    {
+      "path": "settings-global-home.txt",
+      "bytes": 64
+    },
+    {
+      "path": "settings-secure-home.txt",
+      "bytes": 71
+    }
+  ],
+  "publication_policy": {
+    "original_apk_not_committed": true,
+    "device_diagnostics_not_committed": true,
+    "local_network_address_not_recorded": true,
+    "personal_wallpapers_not_committed": true,
+    "cached_weather_not_committed": true
+  }
+}
