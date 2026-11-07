@@ -1,6 +1,6 @@
 tvhome-order 1
-dock com.netflix.ninja,com.amazon.amazonvideo.livingroom,com.google.android.youtube.tv,in.startv.hotstar
-com.android.vending/com.google.android.finsky.tvmainactivity.TvMainActivity
+dock com.google.android.youtube.tv,com.world.youcinetv
+docked 2
 com.google.android.youtube.tv/com.google.android.apps.youtube.tv.activity.ShellActivity
 com.world.youcinetv/com.interactive.brasiliptv.ui.activity.WelcomeActivity
 com.droidlogic.FileBrower/.FileBrower
