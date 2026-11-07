@@ -65,7 +65,7 @@ jobs:
           if-no-files-found: error
 
       - name: Prepare private release keystore
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.build_signed_release }}
+        if: ${{ github.ref == 'refs/heads/hy320-mini' && github.event_name == 'workflow_dispatch' && inputs.build_signed_release }}
         env:
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -87,7 +87,7 @@ jobs:
           echo "ANDROID_KEYSTORE_PATH=$keystore" >> "$GITHUB_ENV"
 
       - name: Build signed release APK
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.build_signed_release }}
+        if: ${{ github.ref == 'refs/heads/hy320-mini' && github.event_name == 'workflow_dispatch' && inputs.build_signed_release }}
         working-directory: launcher
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -97,7 +97,7 @@ jobs:
           ./gradlew --no-daemon :app:assembleRelease -PlauncherApplicationId=xyz.ghstroot.cleanyourtv.hy320mini
 
       - name: Verify signed release APK
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.build_signed_release }}
+        if: ${{ github.ref == 'refs/heads/hy320-mini' && github.event_name == 'workflow_dispatch' && inputs.build_signed_release }}
         run: |
           set -euo pipefail
           apk="launcher/app/build/outputs/apk/release/app-release.apk"
@@ -105,7 +105,7 @@ jobs:
           "$ANDROID_HOME/build-tools/34.0.0/aapt" dump badging "$apk" | grep -F "package: name='xyz.ghstroot.cleanyourtv.hy320mini'"
 
       - name: Upload signed release APK
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.build_signed_release }}
+        if: ${{ github.ref == 'refs/heads/hy320-mini' && github.event_name == 'workflow_dispatch' && inputs.build_signed_release }}
         uses: actions/upload-artifact@v4
         with:
           name: cleanyourtv-hy320mini-signed-release
