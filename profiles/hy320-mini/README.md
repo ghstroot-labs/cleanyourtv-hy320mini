@@ -43,6 +43,12 @@ The package names in the saved order are historical. Apps that are absent, disab
 
 The backup's cached weather text and source from `MainActivity.xml`, the local IP/ADB port from `README.txt`, and internal `settings_revision` / `theme_signature` markers are intentionally excluded.
 
+## Fork application identity
+
+The original device backup records the historical package `com.gathin.tvhome`. Builds from this fork use the dedicated application ID `xyz.ghstroot.cleanyourtv.hy320mini`, while retaining the Java namespace `com.gathin.tvhome` so upstream class and resource references stay stable.
+
+This is a separate Android application identity. Its first installation will not automatically inherit the original package's private preferences or app data; restoration must be planned and verified separately.
+
 ## Current safety gate
 
 Do not build for installation, push a theme, change the default Home, or disable the stock launcher until all of these are resolved:
