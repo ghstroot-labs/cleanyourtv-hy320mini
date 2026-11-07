@@ -35,5 +35,9 @@
   "wallpaper_dim": 10,
   "wallpaper_order": "sequential",
   "reduced_motion": true,
-  "sky_intensity": 0
+  "sky_intensity": 0,
+  "library_apps": [
+    "com.netflix.mediaclient"
+  ],
+  "rows_below_dock": 0
 }
