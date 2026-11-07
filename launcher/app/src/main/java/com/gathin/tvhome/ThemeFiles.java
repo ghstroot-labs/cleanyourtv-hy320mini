@@ -12,6 +12,21 @@ final class ThemeFiles {
 
     private ThemeFiles() {}
 
+    /**
+     * App-private state files that can be restored by the privileged ADB shell. These are deliberately
+     * separate from theme files: they live under Context.getFilesDir(), not Config.dir(), and the exact
+     * allowlist prevents this provider from becoming a general-purpose private-file writer.
+     */
+    static String privateFile(List<String> segments) {
+        if (segments == null || segments.size() != 1) return null;
+        String name = segments.get(0);
+        if (Order.FILE_NAME.equals(name) || Cards.STORE_FILE.equals(name)
+                || "library_apps.txt".equals(name) || "library_home_removed.txt".equals(name)) {
+            return name;
+        }
+        return null;
+    }
+
     /** The path relative to the theme directory, e.g. "config.json" or "wallpapers/dusk.jpg", or null if refused. */
     static String path(List<String> segments) {
         if (segments == null) return null;
