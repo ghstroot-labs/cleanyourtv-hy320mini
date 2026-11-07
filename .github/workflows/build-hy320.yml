@@ -29,7 +29,7 @@ jobs:
         working-directory: launcher
         run: |
           chmod +x gradlew
-          ./gradlew --no-daemon :app:assembleDebug -PlauncherApplicationId=com.gathin.tvhome
+          ./gradlew --no-daemon :app:testDebugUnitTest :app:assembleDebug -PlauncherApplicationId=xyz.ghstroot.cleanyourtv.hy320mini
 
       - name: Mark artifact as CI-only
         run: |
