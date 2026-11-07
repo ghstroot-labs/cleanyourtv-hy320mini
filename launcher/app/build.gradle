@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         // Opt-in identity for firmware with a package-name HOME allowlist.
-        applicationId providers.gradleProperty('launcherApplicationId').getOrElse('com.gathin.tvhome')
+        applicationId providers.gradleProperty('launcherApplicationId').getOrElse('xyz.ghstroot.cleanyourtv.hy320mini')
         minSdk 26
         targetSdk 34
         versionCode 16
