@@ -52,13 +52,16 @@ Set `wallpaper: true` in config.json and add a wallpaper image, or use a theme f
 AdGuard Private DNS works on this TV.
 
 ## Firmware note: HOME.JM
-This projector's firmware routes the Home key through a custom `android.intent.category.HOME.JM`
-category, from the JM launcher that was preloaded. The launcher in this repository does not declare it:
-`MainActivity` answers `android.intent.category.HOME`, `DEFAULT` and `LEANBACK_LAUNCHER`, and
-`grep -rn HOME.JM launcher/` finds nothing - so from a clean checkout the Home key does not reach the
-launcher and lands on FallbackHome. The unit in this folder ran with a filter of its own added to the
-manifest, which is not in this repository; making such a filter part of the launcher is a change to the
-Home path and is open as #1799, and when it lands this note goes away.
+This projector's firmware routes the Home key through the custom
+`android.intent.category.HOME.JM` category used by its preloaded JM launcher. The GHSTROOT HY320 Mini
+fork now declares `HOME.JM` in `MainActivity`'s existing `MAIN` + `HOME` intent filter, while
+retaining the standard `HOME`, `COMMON_HOME` and `DEFAULT` categories. This keeps the device-specific
+Home route reproducible from the repository rather than relying on a local manifest patch.
+
+After installing a signed build, verify the firmware's resolver before changing the preferred Home:
+`cmd package resolve-activity --brief -a android.intent.action.MAIN -c android.intent.category.HOME.JM`.
+The expected result is `xyz.ghstroot.cleanyourtv.hy320mini/.MainActivity`. Confirm the real remote's
+Home key and a reboot on the projector before removing or disabling any fallback launcher.
 
 ## Security
 This TV has `ro.adb.secure` unset, meaning port 5555 accepts any device on the network without
