@@ -19,8 +19,8 @@ android {
         applicationId providers.gradleProperty('launcherApplicationId').getOrElse('xyz.ghstroot.cleanyourtv.hy320mini')
         minSdk 26
         targetSdk 34
-        versionCode 16
-        versionName '3.1.6-projector'
+        versionCode 17
+        versionName '3.1.7-projector'
     }
 
     signingConfigs {
