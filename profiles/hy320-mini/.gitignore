@@ -1,2 +1,2 @@
-# Personal wallpapers extracted from the local backup. Keep them out of the public fork.
-wallpapers/
+wallpapers/*
+!wallpapers/README.md
