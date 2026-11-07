@@ -2,6 +2,12 @@ name: Build HY320 launcher APK
 
 on:
   workflow_dispatch:
+    inputs:
+      build_signed_release:
+        description: "Build an installable release using the private GHSTROOT signing key"
+        required: true
+        type: boolean
+        default: false
   push:
     branches: [main, hy320-mini]
 
@@ -57,3 +63,47 @@ jobs:
           name: cleanyourtv-hy320-ci-debug
           path: launcher/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+
+      - name: Prepare private release keystore
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.build_signed_release }}
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        run: |
+          set -euo pipefail
+          for name in ANDROID_KEYSTORE_BASE64 ANDROID_KEYSTORE_PASSWORD ANDROID_KEY_ALIAS; do
+            if [[ -z "${!name:-}" ]]; then
+              echo "::error::Missing repository Actions secret: $name"
+              exit 1
+            fi
+          done
+          keystore="$RUNNER_TEMP/ghstroot-hy320mini-release.p12"
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$keystore"
+          test -s "$keystore"
+          chmod 600 "$keystore"
+          keytool -list -keystore "$keystore" -storetype PKCS12 \
+            -storepass:env ANDROID_KEYSTORE_PASSWORD -alias "$ANDROID_KEY_ALIAS" >/dev/null
+          echo "ANDROID_KEYSTORE_PATH=$keystore" >> "$GITHUB_ENV"
+
+      - name: Build signed release APK
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.build_signed_release }}
+        working-directory: launcher
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        run: |
+          ./gradlew --no-daemon :app:assembleRelease -PlauncherApplicationId=xyz.ghstroot.cleanyourtv.hy320mini
+
+      - name: Upload signed release APK
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.build_signed_release }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: cleanyourtv-hy320mini-signed-release
+          path: launcher/app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
+
+      - name: Remove temporary signing key
+        if: ${{ always() && github.event_name == 'workflow_dispatch' && inputs.build_signed_release }}
+        run: rm -f "$RUNNER_TEMP/ghstroot-hy320mini-release.p12"
