@@ -21,3 +21,10 @@ bench-results/
 *.aab
 launcher/hs_err_pid*.log
 launcher/replay_pid*.log
+
+# Android signing material is private and must never be committed.
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.base64.txt
