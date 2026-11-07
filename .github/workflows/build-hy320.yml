@@ -96,6 +96,14 @@ jobs:
         run: |
           ./gradlew --no-daemon :app:assembleRelease -PlauncherApplicationId=xyz.ghstroot.cleanyourtv.hy320mini
 
+      - name: Verify signed release APK
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.build_signed_release }}
+        run: |
+          set -euo pipefail
+          apk="launcher/app/build/outputs/apk/release/app-release.apk"
+          "$ANDROID_HOME/build-tools/34.0.0/apksigner" verify --verbose "$apk"
+          "$ANDROID_HOME/build-tools/34.0.0/aapt" dump badging "$apk" | grep -F "package: name='xyz.ghstroot.cleanyourtv.hy320mini'"
+
       - name: Upload signed release APK
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.build_signed_release }}
         uses: actions/upload-artifact@v4
