@@ -54,6 +54,8 @@ class Hy320PackageIdentityTests(unittest.TestCase):
         self.assertIn("secrets.ANDROID_KEY_ALIAS", workflow)
         self.assertIn(":app:assembleRelease", workflow)
         self.assertIn("Remove temporary signing key", workflow)
+        self.assertIn("apksigner\" verify --verbose", workflow)
+        self.assertIn("aapt\" dump badging", workflow)
 
     def test_private_keystore_helper_writes_outside_repository(self):
         helper = self.read("tools/create-hy320-release-keystore.ps1")
