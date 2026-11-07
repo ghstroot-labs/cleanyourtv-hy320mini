@@ -33,11 +33,11 @@ When we reach theme restoration, prepare a combined local theme by copying the c
 
 The backup recorded `Mario-Peaches.png` as the manually selected wallpaper. Restoring that selection is postponed with the other personal images.
 
-## Order and app-library compatibility
+## Order, cards and app-library restoration
 
-`order.txt` is the launcher's private owner-order file, not a theme key. It is kept as a backup artifact; restoring it requires a supported order-import path or a manual reorder in Launcher Settings. Do not copy it into Android app data with an unrelated file manager.
+The signed HY320 Mini build exposes a narrow, privileged restore path through `ThemeProvider` for exactly four app-private state files: `order.txt`, `cards.json`, `library_apps.txt` and `library_home_removed.txt`. These are written under the package's private `getFilesDir()`; the provider rejects every other private filename and remains protected by `WRITE_SECURE_SETTINGS` (ADB shell only).
 
-The package names in the saved order are historical. Apps that are absent, disabled, or no longer expose a TV launch activity may not appear. Verify each app before expecting it to return to Home.
+The active `order.txt` was adapted to the current dock (YouTube and YouCine, with two empty slots) and preserves the remaining backed-up order. Historical packages that are absent, disabled, or no longer expose a TV launch activity simply do not appear. The module-card decision is retained with its original signer digest, so it only applies if the same app and signing certificate are present. The two app-library lists restore the original owner's explicit add/remove choices.
 
 ## Privacy
 
