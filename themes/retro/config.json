@@ -1,16 +1,20 @@
 {
+  "dock_apps": [
+    "com.google.android.youtube.tv",
+    "com.world.youcinetv"
+  ],
+  "fill_dock": false,
   "background_color": "#000000",
   "dock_glass": false,
   "dock_band": false,
   "glass_style": "rim",
   "dock_title": false,
-  "dock_opacity": 100,
-  "fill_dock": true,
-  "columns": 5,
+  "dock_opacity": 70,
+  "columns": 4,
   "ambient_glow": false,
   "app_glow": false,
-  "icon_only_buttons": true,
-  "icon_only_inputs": true,
+  "icon_only_buttons": false,
+  "icon_only_inputs": false,
   "wifi_status_color": true,
   "tile_menu": true,
   "wallpaper": true,
@@ -29,5 +33,6 @@
   "wallpaper_dim": 10,
   "wallpaper_order": "sequential",
   "reduced_motion": true,
-  "sky_intensity": 0
+  "sky_intensity": 0,
+  "rows_below_dock": 0
 }
