@@ -1,0 +1,11 @@
+tvhome-order 1
+dock com.netflix.ninja,com.amazon.amazonvideo.livingroom,com.google.android.youtube.tv,in.startv.hotstar
+com.android.vending/com.google.android.finsky.tvmainactivity.TvMainActivity
+com.google.android.youtube.tv/com.google.android.apps.youtube.tv.activity.ShellActivity
+com.world.youcinetv/com.interactive.brasiliptv.ui.activity.WelcomeActivity
+com.droidlogic.FileBrower/.FileBrower
+com.master.apps/.MainActivity
+com.android.tv.settings/.MainSettings
+com.htc.htcsettings/com.htc.activity.HomeActivity
+com.roysolberg.android.developertools/.ui.activity.MainActivity
+com.droidlogic.updater/.ui.MainActivity
