@@ -1,5 +1,6 @@
 import pathlib
 import unittest
+import xml.etree.ElementTree as ET
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -32,6 +33,24 @@ class Hy320PackageIdentityTests(unittest.TestCase):
     def test_provider_authority_tracks_application_id(self):
         manifest = self.read("launcher/app/src/main/AndroidManifest.xml")
         self.assertIn('android:authorities="${applicationId}.theme"', manifest)
+
+    def test_hy320_home_jm_is_in_main_activity_home_filter(self):
+        manifest = self.read("launcher/app/src/main/AndroidManifest.xml")
+        root = ET.fromstring(manifest)
+        ns = {"android": "http://schemas.android.com/apk/res/android"}
+        android_name = "{http://schemas.android.com/apk/res/android}name"
+        main_activity = root.find(".//activity[@android:name='.MainActivity']", ns)
+        self.assertIsNotNone(main_activity)
+
+        for intent_filter in main_activity.findall("intent-filter"):
+            actions = {node.get(android_name) for node in intent_filter.findall("action")}
+            categories = {node.get(android_name) for node in intent_filter.findall("category")}
+            if "android.intent.action.MAIN" in actions and "android.intent.category.HOME" in categories:
+                self.assertIn("android.intent.category.HOME.JM", categories)
+                self.assertIn("android.intent.category.DEFAULT", categories)
+                return
+
+        self.fail("MainActivity has no MAIN + HOME intent filter")
 
     def test_build_workflow_builds_the_dedicated_package(self):
         workflow = self.read(".github/workflows/build-hy320.yml")
