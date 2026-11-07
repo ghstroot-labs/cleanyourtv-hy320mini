@@ -93,6 +93,9 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.HOME" />
+                <!-- HY320 (t950s_be311): its firmware routes the Home key through JM's custom category.
+                     Keep this in the same filter so standard HOME and COMMON_HOME continue to match. -->
+                <category android:name="android.intent.category.HOME.JM" />
                 <category android:name="android.intent.category.COMMON_HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <!-- ColorOS TV: boot only promotes a HOME that declares this category.
