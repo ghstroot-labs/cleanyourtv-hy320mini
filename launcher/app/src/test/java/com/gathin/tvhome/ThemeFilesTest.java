@@ -17,6 +17,19 @@ public class ThemeFilesTest {
         assertEquals("theme_revision", ThemeFiles.path(Collections.singletonList("theme_revision")));
     }
 
+    @Test public void onlyKnownOwnerStateFilesAreAllowedInPrivateStorage() {
+        assertEquals("order.txt", ThemeFiles.privateFile(Collections.singletonList("order.txt")));
+        assertEquals("cards.json", ThemeFiles.privateFile(Collections.singletonList("cards.json")));
+        assertEquals("library_apps.txt", ThemeFiles.privateFile(Collections.singletonList("library_apps.txt")));
+        assertEquals("library_home_removed.txt", ThemeFiles.privateFile(Collections.singletonList("library_home_removed.txt")));
+        assertNull(ThemeFiles.privateFile(null));
+        assertNull(ThemeFiles.privateFile(Collections.emptyList()));
+        assertNull(ThemeFiles.privateFile(Arrays.asList("subdir", "order.txt")));
+        assertNull(ThemeFiles.privateFile(Collections.singletonList("../shared_prefs/launcher_settings.xml")));
+        assertNull(ThemeFiles.privateFile(Collections.singletonList("launcher_settings.xml")));
+        assertNull(ThemeFiles.privateFile(Collections.singletonList("anything.txt")));
+    }
+
     @Test public void collectionImagesAreAllowed() {
         assertEquals("wallpapers/dusk.jpg", ThemeFiles.path(Arrays.asList("wallpapers", "dusk.jpg")));
         assertEquals("wallpapers/Night_2.WEBP", ThemeFiles.path(Arrays.asList("wallpapers", "Night_2.WEBP")));
