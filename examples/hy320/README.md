@@ -8,7 +8,7 @@
 
 ## What was done
 1. **Debloated 23 packages** — ad services, app stores, background junk, unused preloaded apps
-2. **Installed Apple TV-style launcher** (com.gathin.tvhome) with dock: Netflix, YouTube, Wave IPTV, MX Player
+2. **Installed Apple TV-style launcher** from the original Gathin package; this fork now builds as `xyz.ghstroot.cleanyourtv.hy320mini` with the same Java namespace
 3. **Set launcher as default home**, disabled stock launcher (com.htc.htclauncherhighenglishd08)
 4. **Enabled AdGuard Private DNS** for ad blocking
 
@@ -36,7 +36,7 @@ one of the launchers `build-and-install.sh` recognises: without it the script st
 launcher this script knows". Home is then set by hand, and the stock launcher stays as a fallback:
 
 ```sh
-TV_HOST=<tv ip> tools/venv/bin/python tools/tv.py 'cmd package set-home-activity com.gathin.tvhome/.MainActivity'
+TV_HOST=<tv ip> tools/venv/bin/python tools/tv.py 'cmd package set-home-activity xyz.ghstroot.cleanyourtv.hy320mini/.MainActivity'
 ```
 
 ## Change dock apps or order
