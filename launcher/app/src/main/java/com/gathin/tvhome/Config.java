@@ -29,7 +29,7 @@ import java.util.Set;
 /**
  * The launcher's settings: the values in res/values/config.xml, with an optional overlay read from
  * {@code config.json} in the app's external files directory
- * ({@code /sdcard/Android/data/com.gathin.tvhome/files/}). Every key in the JSON is optional and an
+ * (the app's external files directory). Every key in the JSON is optional and an
  * unknown or badly typed key is ignored, so a theme can change the dock and the look without a rebuild:
  * {@code tools/theme.sh themes/<name>} pushes a theme folder there and restarts Home.
  *
