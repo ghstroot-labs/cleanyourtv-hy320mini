@@ -1,4 +1,4 @@
-name: Couch TV Slim Night BR HY320 (experimental APK)
+name: Slim Samba BR v2 HY320 (experimental APK)
 
 on:
   push:
@@ -66,19 +66,22 @@ jobs:
           text = gradle.read_text()
           old = 'applicationId = "app.couchtv.launcher"'
           assert text.count(old) == 1, "Upstream applicationId changed; halt"
-          text = text.replace(old, 'applicationId = "studio.ghstroot.couchtvslimbr.hy320"')
+          text = text.replace(old, 'applicationId = "studio.ghstroot.slimsamba.br"')
           gradle.write_text(text)
           manifest = root / "tv-home/android/app/src/main/AndroidManifest.xml"
           text = manifest.read_text()
           old = 'android:label="Home"'
           assert old in text
-          text = text.replace(old, 'android:label="Couch TV Slim Night BR"', 1)
+          text = text.replace(old, 'android:label="Slim Samba BR"', 1)
           manifest.write_text(text)
           print("Lite config and separate app ID applied")
           PY
 
       - name: Apply Slim Night BR UI, greeting and status cards
         run: python3 experiments/couch-tv-lite-hy320/apply_slim_night.py
+
+      - name: Apply Slim Samba v2 visual system
+        run: python3 experiments/couch-tv-lite-hy320/apply_slim_samba_v2.py
 
       - name: Build release APK with temporary test signing
         working-directory: upstream/tv-home/android
@@ -92,22 +95,23 @@ jobs:
           set -euo pipefail
           apk="upstream/tv-home/android/app/build/outputs/apk/release/app-release.apk"
           test -s "$apk"
-          "$ANDROID_HOME/build-tools/34.0.0/aapt" dump badging "$apk" | grep -F "package: name='studio.ghstroot.couchtvslimbr.hy320'"
+          "$ANDROID_HOME/build-tools/34.0.0/aapt" dump badging "$apk" | grep -F "package: name='studio.ghstroot.slimsamba.br'"
           "$ANDROID_HOME/build-tools/34.0.0/apksigner" verify --print-certs "$apk"
           unzip -p "$apk" assets/www/tv/config.js > "$RUNNER_TEMP/config.js"
           grep -q '"lighter":true' "$RUNNER_TEMP/config.js"
           grep -q '"moving_tiles":false' "$RUNNER_TEMP/config.js"
           grep -q '"glass":"off"' "$RUNNER_TEMP/config.js"
           grep -q '"language":"pt-BR"' "$RUNNER_TEMP/config.js"
-          unzip -p "$apk" assets/www/tv/app.js | grep -q 'REBECA E NATAN'
+          unzip -p "$apk" assets/www/tv/app.js | grep -q 'samba-clock-position'
+          if unzip -p "$apk" assets/www/tv/app.js | grep -q 'hyGreeting('; then echo 'Old greeting detected' >&2; exit 1; fi
           unzip -p "$apk" assets/www/tv/app.js | grep -q 'hyWifiRefresh'
-          cp "$apk" couch-tv-slim-night-br-hy320.apk
-          sha256sum couch-tv-slim-night-br-hy320.apk
+          cp "$apk" slim-samba-br-v2-hy320.apk
+          sha256sum slim-samba-br-v2-hy320.apk
 
       - name: Upload APK for testing only
         uses: actions/upload-artifact@v4
         with:
-          name: couch-tv-slim-night-br-hy320
-          path: couch-tv-slim-night-br-hy320.apk
+          name: slim-samba-br-v2-hy320
+          path: slim-samba-br-v2-hy320.apk
           if-no-files-found: error
           retention-days: 14
