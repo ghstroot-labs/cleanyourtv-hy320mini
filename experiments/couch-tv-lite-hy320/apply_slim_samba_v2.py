@@ -82,7 +82,7 @@ html.theme-night .people-wrap, html.theme-night #people, html.theme-night #peopl
 }
 html.theme-night .scene .gclock {
   left: 0 !important; right: 0 !important;
-  top: calc(42% - 10.25rem) !important;
+  top: calc(50% - 10.25rem) !important;
   text-align: center !important;
   font-size: 25rem !important;
   transform: none !important;
@@ -90,18 +90,18 @@ html.theme-night .scene .gclock {
   white-space: nowrap;
 }
 html.theme-night[data-samba-clock="upper"] .scene .gclock {
-  top: calc(27% - 10.25rem) !important;
+  top: calc(29% - 10.25rem) !important;
 }
 html.theme-night[data-samba-clock="lower"] .scene .gclock {
-  top: calc(52% - 10.25rem) !important;
+  top: calc(59% - 10.25rem) !important;
 }
 html.theme-night[data-samba-clock="left"] .scene .gclock {
-  top: calc(42% - 10.25rem) !important;
+  top: calc(50% - 10.25rem) !important;
   left: 4rem !important; right: auto !important; text-align: left !important;
   font-size: 22rem !important;
 }
 html.theme-night[data-samba-clock="right"] .scene .gclock {
-  top: calc(42% - 10.25rem) !important;
+  top: calc(50% - 10.25rem) !important;
   left: auto !important; right: 4rem !important; text-align: right !important;
   font-size: 22rem !important;
 }
