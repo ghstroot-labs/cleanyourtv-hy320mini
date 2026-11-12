@@ -19,7 +19,7 @@ manifest = "tv-home/android/app/src/main/AndroidManifest.xml"
 i18n = "tv-home/web/i18n.js"
 
 # Non-animated greeting, refreshed by the existing 15-second clock timer (no new timer).
-patch(html, "</header>", '</header>\n<div id="hy-greeting" class="hy-greeting" aria-label="Saudação"></div>')
+patch(html, "</header>\n\n<!-- Ambient Music Art Screen", '</header>\n<div id="hy-greeting" class="hy-greeting" aria-label="Saudação"></div>\n\n<!-- Ambient Music Art Screen')
 patch(app, "  function clock() {\n", '''  function hyGreeting(d) {
     var box = $("hy-greeting");
     if (!box) return;
