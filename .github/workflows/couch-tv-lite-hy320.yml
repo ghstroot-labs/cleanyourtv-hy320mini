@@ -1,4 +1,4 @@
-name: VYFLUX v3 HY320 (experimental APK)
+name: Couch TV Slim Night BR - Sem Saudacao (experimental APK)
 
 on:
   push:
@@ -51,10 +51,6 @@ jobs:
               "moving_tiles": False,
               "hi_res": False,
               "scenes": ["fog"],
-              "look": "night",
-              "clock_style": "frosted",
-              "glass_amount": 3,
-              "sun_sync": False,
               "language": "pt-BR",
               "clock": "24h",
               "keep_watching": False,
@@ -64,21 +60,19 @@ jobs:
               "video_url": "",
               "ambient_weather": False,
           })
-          data["tvs"][0]["quick"] = ["input", "wifi", "vy-settings"]
+          data["tvs"][0]["quick"] = ["wifi", "input"]
           (root / "config.json").write_text(json.dumps(data, indent=2) + "\n")
           gradle = root / "tv-home/android/app/build.gradle.kts"
           text = gradle.read_text()
           old = 'applicationId = "app.couchtv.launcher"'
           assert text.count(old) == 1, "Upstream applicationId changed; halt"
-          text = text.replace(old, 'applicationId = "studio.ghstroot.vyflux.hy320"')
-          text = text.replace('versionName = "0.12"', 'versionName = "3.0.0-beta.1"')
-          text = text.replace("versionCode = 14", "versionCode = 30001")
+          text = text.replace(old, 'applicationId = "studio.ghstroot.couchtvslimnogreeting.hy320"')
           gradle.write_text(text)
           manifest = root / "tv-home/android/app/src/main/AndroidManifest.xml"
           text = manifest.read_text()
           old = 'android:label="Home"'
           assert old in text
-          text = text.replace(old, 'android:label="VYFLUX"', 1)
+          text = text.replace(old, 'android:label="Couch TV Slim Night BR Lite"', 1)
           manifest.write_text(text)
           print("Lite config and separate app ID applied")
           PY
@@ -86,8 +80,8 @@ jobs:
       - name: Apply Slim Night BR UI, greeting and status cards
         run: python3 experiments/couch-tv-lite-hy320/apply_slim_night.py
 
-      - name: Apply VYFLUX v3 approved visual system and original glass clock
-        run: python3 experiments/couch-tv-lite-hy320/apply_vyflux_v3.py
+      - name: Remove greeting only, preserving the verified layout
+        run: python3 experiments/couch-tv-lite-hy320/remove_greeting_only.py
 
       - name: Build release APK with temporary test signing
         working-directory: upstream/tv-home/android
@@ -101,27 +95,23 @@ jobs:
           set -euo pipefail
           apk="upstream/tv-home/android/app/build/outputs/apk/release/app-release.apk"
           test -s "$apk"
-          "$ANDROID_HOME/build-tools/34.0.0/aapt" dump badging "$apk" | grep -F "package: name='studio.ghstroot.vyflux.hy320'"
+          "$ANDROID_HOME/build-tools/34.0.0/aapt" dump badging "$apk" | grep -F "package: name='studio.ghstroot.couchtvslimnogreeting.hy320'"
           "$ANDROID_HOME/build-tools/34.0.0/apksigner" verify --print-certs "$apk"
           unzip -p "$apk" assets/www/tv/config.js > "$RUNNER_TEMP/config.js"
           grep -q '"lighter":true' "$RUNNER_TEMP/config.js"
           grep -q '"moving_tiles":false' "$RUNNER_TEMP/config.js"
           grep -q '"glass":"off"' "$RUNNER_TEMP/config.js"
           grep -q '"language":"pt-BR"' "$RUNNER_TEMP/config.js"
-          unzip -p "$apk" assets/www/tv/app.js | grep -q 'vy-clock-position'
-          unzip -p "$apk" assets/www/tv/index.html | grep -q 'VYFLUX'
-          unzip -p "$apk" assets/www/tv/app.css | grep -q 'VYFLUX v3'
-          grep -q 'android:label="VYFLUX"' upstream/tv-home/android/app/src/main/AndroidManifest.xml
-          grep -q '#24D5ED' upstream/tv-home/android/app/src/main/res/drawable/icon.xml
-          if unzip -p "$apk" assets/www/tv/app.js | grep -q 'hyGreeting('; then echo 'Old greeting detected' >&2; exit 1; fi
+          if unzip -p "$apk" assets/www/tv/app.js | grep -q 'hyGreeting'; then echo 'Greeting still present' >&2; exit 1; fi
+          unzip -p "$apk" assets/www/tv/app.js | grep -q 'function glassClock(hm)'
           unzip -p "$apk" assets/www/tv/app.js | grep -q 'hyWifiRefresh'
-          cp "$apk" vyflux-v3-hy320.apk
-          sha256sum vyflux-v3-hy320.apk
+          cp "$apk" couch-tv-slim-night-br-sem-saudacao.apk
+          sha256sum couch-tv-slim-night-br-sem-saudacao.apk
 
       - name: Upload APK for testing only
         uses: actions/upload-artifact@v4
         with:
-          name: vyflux-v3-hy320
-          path: vyflux-v3-hy320.apk
+          name: couch-tv-slim-night-br-sem-saudacao
+          path: couch-tv-slim-night-br-sem-saudacao.apk
           if-no-files-found: error
           retention-days: 14
