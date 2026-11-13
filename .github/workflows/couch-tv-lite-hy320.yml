@@ -61,7 +61,7 @@ jobs:
               "ambient_weather": False,
           })
           data["tvs"][0]["quick"] = ["wifi", "input"]
-          (root / "config.json").write_text(json.dumps(data, indent=2) + "\n")
+          (root / "config.json").write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n")
           gradle = root / "tv-home/android/app/build.gradle.kts"
           text = gradle.read_text()
           old = 'applicationId = "app.couchtv.launcher"'
@@ -106,7 +106,7 @@ jobs:
           grep -q '"glass":"off"' "$RUNNER_TEMP/config.js"
           grep -q '"language":"pt-BR"' "$RUNNER_TEMP/config.js"
           grep -q '"people":\[\]' "$RUNNER_TEMP/config.js"
-          grep -q '"place":"Palhoça, SC"' "$RUNNER_TEMP/config.js"
+          (grep -Fq '"place":"Palhoça, SC"' "$RUNNER_TEMP/config.js" || grep -Fq '"place":"Palho\u00e7a, SC"' "$RUNNER_TEMP/config.js")
           grep -q '"timezone":"America/Sao_Paulo"' "$RUNNER_TEMP/config.js"
           grep -q 'PEOPLE_DISABLED = true' <(unzip -p "$apk" assets/www/tv/app.js)
           grep -q 'cell_selection=land' <(unzip -p "$apk" assets/www/tv/app.js)
