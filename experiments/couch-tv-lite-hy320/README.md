@@ -1,35 +1,46 @@
-# Couch TV Lite — HY320 Mini (experimento isolado)
+# Couch TV Slim Night BR sem saudação — HY320 Mini (experimento isolado)
 
-Preparação experimental aprovada em 12/11/2026 para o projetor HY320 Mini (Android 13, API 33, armeabi-v7a, cerca de 2 GB de RAM, WebView 101).
+Preparação experimental para o projetor HY320 Mini (Android 13, API 33, armeabi-v7a, cerca de 2 GB de RAM e WebView 101).
 
 ## Objetivo
-Gerar **somente** um APK Android de teste do launcher Couch TV, favorecendo a resposta do controle remoto em hardware limitado. Esta branch **não modifica** o projetor, não altera a branch `main` e não substitui o CleanYourTV nem o Couch TV oficial.
+
+Gerar um APK Android de teste do launcher Couch TV, mantendo a receita isolada nesta branch. Ela não modifica o projetor, não altera a branch `main` e não substitui o CleanYourTV nem o Couch TV oficial.
 
 ## Origem e licença
+
 - Projeto de origem: https://github.com/Seagey/couch-tv (MIT).
 - Commit fixado: `e8efc55965d7f029f898538d7029758a4281a00b`.
-- Código-fonte da origem é obtido durante o GitHub Actions. Esta branch armazena apenas a receita da compilação, sem copiar o projeto inteiro.
+- O código-fonte de origem é obtido durante o GitHub Actions. Esta branch armazena apenas a receita da compilação, sem copiar o projeto inteiro.
 
 ## Alterações do APK experimental
-1. `home.lighter=true`: reduz efeitos de blur, sombra, movimento e tamanho de imagens conforme implementação original.
-2. `home.glass=off`, `home.moving_tiles=false`, `home.hi_res=false`.
-3. Uma cena estática (`night`) e nenhuma animação de vídeo.
-4. `applicationId=studio.ghstroot.couchtvlite.hy320`, diferente do app oficial `app.couchtv.launcher`, para teste **lado a lado**.
-5. Nome visível `Couch TV Lite - HY320`, atualização automática do repositório oficial desabilitada para a compilação personalizada.
 
-A versão inicial contém configurações demonstrativas da origem; não copia dados nem preferências do Couch TV já instalado.
+1. Mantém o modo leve: `home.lighter=true`, vidro e movimento desativados, sem vídeo de fundo e com uma única paisagem estática.
+2. Remove o seletor circular de perfis e a seção **Pessoas** das configurações. A lógica interna compartilhada é preservada para não quebrar a seção Continuar assistindo.
+3. Transforma os cartões **Wi-Fi** e **Entradas** em pílulas com bordas totalmente arredondadas, mantendo os ícones, textos e estados existentes.
+4. Fixa a meteorologia no centro municipal de Palhoça, SC (latitude `-27.64500046`, longitude `-48.66799927`), fuso `America/Sao_Paulo`. Usa Open-Meteo, valida a resposta, evita cache HTTP local e consulta novamente a cada 15 minutos por padrão.
+5. Adia a primeira consulta meteorológica por 1,2 segundo para permitir que a tela inicial seja desenhada antes da atividade de rede. Desativa também a consulta recorrente de troca de perfil, pois os perfis foram removidos.
+6. Corrige textos visíveis em português brasileiro e define corretamente o idioma do documento como `pt-BR`.
+7. Mantém o identificador separado `studio.ghstroot.couchtvslimnogreeting.hy320`, diferente do app oficial `app.couchtv.launcher`, para instalação lado a lado.
+
+A meteorologia usa a coordenada municipal, não a posição exata do imóvel. A precisão local continua limitada à resolução e à atualização dos modelos meteorológicos.
+
+## Inicialização segura
+
+O APK continua usando a atividade Android declarada como tela inicial (HOME). Esta receita não adiciona outro receiver para forçar a abertura do launcher, não cria serviço em segundo plano e não altera permissões de sistema, acessibilidade, energia ou a tela inicial de fábrica. A otimização é conservadora: primeiro desenha a interface e só depois inicia a consulta do clima. Não promete alterar o tempo de inicialização do Android ou eliminar limitações do hardware.
 
 ## Execução na nuvem
-Apenas um push da receita na branch `experiment/couch-tv-lite-hy320` inicia o workflow `.github/workflows/couch-tv-lite-hy320.yml`, que prepara o SDK Android e o JDK 21, compila só o módulo `tv-home/android/app`, valida o identificador e os ajustes no APK e publica o arquivo como artefato de teste.
 
-**Assinatura:** a compilação usa a chave de teste gerada pelo runner. Não serve para atualizar o APK oficial e novas compilações podem exigir reinstalação da versão experimental. Não é um APK de produção.
+Um push na branch `experiment/couch-tv-lite-hy320` inicia `.github/workflows/couch-tv-lite-hy320.yml`. O workflow prepara o SDK Android e o JDK 21, obtém a versão fixa do Couch TV, aplica os ajustes, compila somente `tv-home/android/app`, valida o identificador e as alterações e publica o artefato `couch-tv-slim-night-br-sem-saudacao`.
 
-**Restrições de segurança:** nenhum ADB ou conexão com o HY320, nenhuma instalação/remoção, nenhuma seleção de launcher e nenhuma ação sobre a `main`. A instalação e o teste real dependerão de aprovação separada.
+**Assinatura:** a compilação usa a chave de teste do runner. Não serve para atualizar o APK oficial e novas compilações podem exigir reinstalação da versão experimental. Não é um APK de produção.
+
+**Restrições:** nenhum ADB ou conexão com o HY320 durante a compilação, nenhuma instalação ou remoção, nenhuma seleção de launcher e nenhuma ação sobre a branch `main`. A instalação e o teste real continuam separados.
 
 ## Critérios de aceitação
-- Workflow verde e artefato `couch-tv-lite-hy320.apk` validado.
-- Identificador distinto e conteúdo `home.lighter=true` comprovados.
-- Depois de autorização: instalação isolada, teste de navegação e comparação contra Couch TV 0.12 com os mesmos ícones.
-- Se não houver ganho real, desfazer somente a instalação da versão experimental.
 
-**Nota:** otimizações gráficas são uma hipótese, não uma garantia de melhoria. O WebView 101 e o hardware podem continuar limitando a fluidez.
+- Workflow verde e artefato de teste validado.
+- Identificador do pacote e configurações do APK conferidos.
+- Verificação da remoção do seletor de perfis, das pílulas e da localização meteorológica de Palhoça.
+- Só depois da validação do APK: instalação isolada e conferência visual no projetor, preservando o launcher atual como alternativa.
+
+As otimizações visuais podem melhorar a resposta em hardware limitado, mas o resultado deve ser confirmado no próprio HY320.

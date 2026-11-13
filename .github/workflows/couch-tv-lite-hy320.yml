@@ -83,6 +83,9 @@ jobs:
       - name: Remove greeting only, preserving the verified layout
         run: python3 experiments/couch-tv-lite-hy320/remove_greeting_only.py
 
+      - name: Apply Palhoça weather, profile removal, pill cards and safe startup refinements
+        run: python3 experiments/couch-tv-lite-hy320/refine_launcher.py
+
       - name: Build release APK with temporary test signing
         working-directory: upstream/tv-home/android
         run: |
@@ -102,6 +105,12 @@ jobs:
           grep -q '"moving_tiles":false' "$RUNNER_TEMP/config.js"
           grep -q '"glass":"off"' "$RUNNER_TEMP/config.js"
           grep -q '"language":"pt-BR"' "$RUNNER_TEMP/config.js"
+          grep -q '"people":\[\]' "$RUNNER_TEMP/config.js"
+          grep -q '"place":"Palhoça, SC"' "$RUNNER_TEMP/config.js"
+          grep -q '"timezone":"America/Sao_Paulo"' "$RUNNER_TEMP/config.js"
+          grep -q 'PEOPLE_DISABLED = true' <(unzip -p "$apk" assets/www/tv/app.js)
+          grep -q 'cell_selection=land' <(unzip -p "$apk" assets/www/tv/app.js)
+          grep -q 'border-radius:999px' <(unzip -p "$apk" assets/www/tv/app.css)
           if unzip -p "$apk" assets/www/tv/app.js | grep -q 'hyGreeting'; then echo 'Greeting still present' >&2; exit 1; fi
           unzip -p "$apk" assets/www/tv/app.js | grep -q 'function glassClock(hm)'
           unzip -p "$apk" assets/www/tv/app.js | grep -q 'hyWifiRefresh'
