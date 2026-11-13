@@ -66,7 +66,7 @@ jobs:
           text = gradle.read_text()
           old = 'applicationId = "app.couchtv.launcher"'
           assert text.count(old) == 1, "Upstream applicationId changed; halt"
-          text = text.replace(old, 'applicationId = "studio.ghstroot.couchtvslimnogreeting.hy320"')
+          text = text.replace(old, 'applicationId = "studio.ghstroot.couchtvslimnogreeting.hy320.test"')
           gradle.write_text(text)
           manifest = root / "tv-home/android/app/src/main/AndroidManifest.xml"
           text = manifest.read_text()
@@ -98,7 +98,7 @@ jobs:
           set -euo pipefail
           apk="upstream/tv-home/android/app/build/outputs/apk/release/app-release.apk"
           test -s "$apk"
-          "$ANDROID_HOME/build-tools/34.0.0/aapt" dump badging "$apk" | grep -F "package: name='studio.ghstroot.couchtvslimnogreeting.hy320'"
+          "$ANDROID_HOME/build-tools/34.0.0/aapt" dump badging "$apk" | grep -F "package: name='studio.ghstroot.couchtvslimnogreeting.hy320.test'"
           "$ANDROID_HOME/build-tools/34.0.0/apksigner" verify --print-certs "$apk"
           unzip -p "$apk" assets/www/tv/config.js > "$RUNNER_TEMP/config.js"
           grep -q '"lighter":true' "$RUNNER_TEMP/config.js"
