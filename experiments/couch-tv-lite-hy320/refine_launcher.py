@@ -90,6 +90,23 @@ pt.update({
     "idle_photo_sub": "Após um período sem comandos, oculta os aplicativos e a seção Continuar assistindo. O relógio, o clima e as paisagens permanecem visíveis. Qualquer tecla restaura a tela sem abrir um aplicativo.",
     "about_reset_sub": "O idioma, o clima, a aparência, as fotos e os acessos rápidos voltam às configurações do config.json. Os aplicativos instalados são preservados.",
 })
+pt.update({
+    "wx_mostly_clear": "Predomínio de sol",
+    "wx_provider_note": "Serviço gratuito, sem conta nem chave de API. É o único provedor disponível no momento.",
+    "sun_sync_sub": "Escolhe a paisagem de acordo com o amanhecer, o dia, o entardecer e a noite da sua região.",
+    "glass_note": "Aplica um efeito de vidro fosco atrás do relógio, de {keep} e dos aplicativos, permitindo que a paisagem continue visível. Em aparelhos mais lentos, escolha Ativado, sem desfoque.",
+    "glass_amount_note": "Controla quanto da paisagem aparece através do vidro, do relógio e dos ícones, variando entre fosco e muito transparente.",
+    "np_note": "Mostra a música reproduzida no Spotify ou em outro aplicativo e oferece os controles Anterior, Reproduzir/Pausar e Próximo. Na seção Continuar assistindo, pressione a seta para cima.",
+    "np_note_offline": "Para acessar a reprodução em andamento, é necessário ter um computador na rede ou o aplicativo instalado na TV.",
+    "quick_note": "Pressione OK para mostrar ou ocultar um botão. Mantenha OK pressionado para alterar a ordem.",
+    "hint_slider": "Use as setas esquerda e direita para ajustar. Pressione Voltar para retornar.",
+    "photos_pick": "Adicionar fotos de um dispositivo USB ou do projetor",
+    "video_note": "Um vídeo curto, sem som e em repetição substitui a foto. Informe um link MP4 ou MOV da internet ou da rede local. Se a reprodução falhar, a foto continuará sendo exibida. Em aparelhos mais lentos, deixe esse recurso desativado.",
+    "upd_err_allow": "Primeiro, permita que este aplicativo instale outros aplicativos. Nas configurações do Android, abra Segurança e restrições e habilite Fontes desconhecidas. Em seguida, tente novamente.",
+    "run_alone": "Diretamente no projetor, sem computador",
+    "run_quiet": "O computador não está respondendo",
+    "home_ask_sub": "Assim, o botão Início abrirá este aplicativo. O Android exibirá um seletor: escolha este aplicativo e selecione Sempre. A tela inicial original continuará instalada."
+})
 i18n = i18n[:match.start(1)] + json.dumps(pt, ensure_ascii=False, separators=(",", ":")) + i18n[match.end(1):]
 I18N.write_text(i18n, encoding="utf-8")
 
