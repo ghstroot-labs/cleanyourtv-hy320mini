@@ -20,7 +20,7 @@ Gerar um APK Android de teste do launcher Couch TV, mantendo a receita isolada n
 4. Fixa a meteorologia no centro municipal de Palhoça, SC (latitude `-27.64500046`, longitude `-48.66799927`), fuso `America/Sao_Paulo`. Usa Open-Meteo, valida a resposta, evita cache HTTP local e consulta novamente a cada 15 minutos por padrão.
 5. Adia a primeira consulta meteorológica por 1,2 segundo para permitir que a tela inicial seja desenhada antes da atividade de rede. Desativa também a consulta recorrente de troca de perfil, pois os perfis foram removidos.
 6. Corrige textos visíveis em português brasileiro e define corretamente o idioma do documento como `pt-BR`.
-7. Mantém o identificador separado `studio.ghstroot.couchtvslimnogreeting.hy320`, diferente do app oficial `app.couchtv.launcher`, para instalação lado a lado.
+7. Mantém o identificador separado `studio.ghstroot.couchtvslimnogreeting.hy320.test`, diferente do app oficial `app.couchtv.launcher`, para instalação lado a lado.
 
 A meteorologia usa a coordenada municipal, não a posição exata do imóvel. A precisão local continua limitada à resolução e à atualização dos modelos meteorológicos.
 
@@ -32,7 +32,7 @@ O APK continua usando a atividade Android declarada como tela inicial (HOME). Es
 
 Um push na branch `experiment/couch-tv-lite-hy320` inicia `.github/workflows/couch-tv-lite-hy320.yml`. O workflow prepara o SDK Android e o JDK 21, obtém a versão fixa do Couch TV, aplica os ajustes, compila somente `tv-home/android/app`, valida o identificador e as alterações e publica o artefato `couch-tv-slim-night-br-sem-saudacao`.
 
-**Assinatura:** a compilação usa a chave de teste do runner. Não serve para atualizar o APK oficial e novas compilações podem exigir reinstalação da versão experimental. Não é um APK de produção.
+**Assinatura:** a compilação usa a chave de teste do runner. Não serve para atualizar o APK oficial e novas compilações podem exigir reinstalação da versão experimental. Não é um APK de produção. O identificador `.test` permite instalá-lo ao lado do pacote experimental anterior, sem substituir nem apagar os dados dele.
 
 **Restrições:** nenhum ADB ou conexão com o HY320 durante a compilação, nenhuma instalação ou remoção, nenhuma seleção de launcher e nenhuma ação sobre a branch `main`. A instalação e o teste real continuam separados.
 
